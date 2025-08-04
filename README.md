@@ -1,5 +1,4 @@
-<img width="751" height="760" alt="image" src="https://github.com/user-attachments/assets/9c409964-26f7-44a3-9e7a-77954d5f96d5" /># FITAPP--FITNESSAPPLICATION-
-Fitness Tracker Application
+# Fitness Tracker Application
 - HTML
 - CSS
 - JAVASCRIPT
