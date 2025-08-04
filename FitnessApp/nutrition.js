@@ -1,7 +1,7 @@
 const searchBar = document.getElementById('search-bar');
 const foodList = document.getElementById('food-list');
 
-const apiId = '2409fa4d';  // Your actual App ID
+const apiId = '';  // Your actual App ID
 const apiKey = '';  // Your actual API Key
 
 function searchFood() {
@@ -40,5 +40,6 @@ function searchFood() {
         })
         .catch(error => console.error('Error:', error));
 }
+
 
 
