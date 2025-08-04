@@ -2,7 +2,7 @@ const searchBar = document.getElementById('search-bar');
 const foodList = document.getElementById('food-list');
 
 const apiId = '2409fa4d';  // Your actual App ID
-const apiKey = '38e534a83ae5cef53ac34ea9888f22f9';  // Your actual API Key
+const apiKey = '';  // Your actual API Key
 
 function searchFood() {
     const query = searchBar.value.trim();
@@ -40,4 +40,5 @@ function searchFood() {
         })
         .catch(error => console.error('Error:', error));
 }
+
 
