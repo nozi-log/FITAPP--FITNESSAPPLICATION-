@@ -2,6 +2,7 @@
 - HTML
 - CSS
 - JAVASCRIPT
+- API
 
 # IMAGE-
 <img width="331" height="714" alt="image" src="https://github.com/user-attachments/assets/aea229d8-af9f-4193-8446-d1b3293d63c0" />
