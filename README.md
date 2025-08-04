@@ -1,2 +1,5 @@
 # FITAPP--FITNESSAPPLICATION-
 Fitness Tracker Application
+- HTML
+- CSS
+- JAVASCRIPT
