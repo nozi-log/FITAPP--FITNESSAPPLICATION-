@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK (Modular) -->
+</head>
+<body>
+    <div class="main-content">
+        <div class="content-section">
+            <h2>Edit Profile</h2>
+            <button class="back-button" onclick="location.href='main-profile.html'">Back</button>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Your Birthday</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <button type="submit" class="save-button">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Move the Firebase SDK and your script to the bottom -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js';
+        import { getDatabase, ref, get, update } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js';
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCD8wuUiQNmvrDRVwboAMjqa21MCr-QLpA",
+            authDomain: "fitness-app-2b0cc.firebaseapp.com",
+            projectId: "fitness-app-2b0cc",
+            storageBucket: "fitness-app-2b0cc.appspot.com",
+            messagingSenderId: "7078058985",
+            appId: "1:7078058985:web:400fb97314019a7b7ac978",
+            measurementId: "G-BT63PVMTYK",
+            databaseURL: "https://fitness-app-2b0cc-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        // Function to fetch user profile data
+        async function fetchProfileData(userId) {
+            const userRef = ref(database, 'users/' + userId);
+            try {
+                const snapshot = await get(userRef);
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    document.getElementById('name').value = userData.name || '';
+                    document.getElementById('email').value = userData.email || '';
+                    document.getElementById('dob').value = userData.birthday || '';
+                } else {
+                    console.log('No data available');
+                }
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        }
+
+        // Function to save updated profile data
+        async function saveProfileData(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const userId = auth.currentUser.uid; // Get the current user's ID
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const dob = document.getElementById('dob').value;
+
+            try {
+                await update(ref(database, 'users/' + userId), {
+                    name: name,
+                    email: email,
+                    birthday: dob
+                });
+                alert('Profile updated successfully!'); // Success message
+                location.href = 'main-profile.html'; // Redirect to main profile after update
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile: ' + error.message); // Error message
+            }
+        }
+
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid; // Get the authenticated user's ID
+                fetchProfileData(userId); // Call the function with the user's ID
+                // Attach the saveProfileData function to the form's submit event
+                document.getElementById('profile-form').addEventListener('submit', saveProfileData);
+            } else {
+                console.log('User is not authenticated');
+                alert('You need to log in to edit your profile.');
+                window.location.href = 'login.html'; // Redirect to login page
+            }
+        });
+    </script>
+</body>
+</html>

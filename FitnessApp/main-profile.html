@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <style>
+        #camera-stream {
+            display: none;
+            width: 100%;
+            height: auto;
+            border: 1px solid black;
+        }
+        #profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-img" id="profile-img">
+                <input type="file" id="upload-file" accept="image/*" style="display:none" onchange="uploadImage(event)">
+                <button onclick="document.getElementById('upload-file').click()">Upload from File</button>
+                <button onclick="toggleCamera()">Take Photo</button>
+                <video id="camera-stream"></video>
+                <h2 class="profile-name" id="profile-name">Loading...</h2>
+            </div>
+            <ul class="menu">
+                <li><a href="edit-profile.html">Edit Profile</a></li>
+                <li><a href="#" onclick="logout()">Log out</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <button class="back-button" onclick="location.href='index.html'">Back</button>
+                <h2>Welcome to Your Profile</h2>
+            </header>
+            <p>From here, you can edit your profile details. Use the menu on the left to navigate.</p>
+            <div class="profile-details">
+                <h3>Profile Information</h3>
+                <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+                <p><strong>Phone:</strong> <span id="user-phone">Loading...</span></p>
+                <p><strong>Address:</strong> <span id="user-address">Loading...</span></p>
+                <p><strong>Birthday:</strong> <span id="user-birthday">Loading...</span></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCD8wuUiQNmvrDRVwboAMjqa21MCr-QLpA",
+            authDomain: "fitness-app-2b0cc.firebaseapp.com",
+            projectId: "fitness-app-2b0cc",
+            storageBucket: "fitness-app-2b0cc.appspot.com",
+            messagingSenderId: "7078058985",
+            appId: "1:7078058985:web:400fb97314019a7b7ac978",
+            measurementId: "G-BT63PVMTYK",
+            databaseURL: "https://fitness-app-2b0cc-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to the database and storage
+        var database = firebase.database();
+        var storage = firebase.storage();
+
+        // Fetch user data
+        function fetchUserData() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var userId = user.uid;
+                    var userRef = database.ref('users/' + userId);
+                    userRef.once('value').then(function(snapshot) {
+                        if (snapshot.exists()) {
+                            var userData = snapshot.val();
+                            document.getElementById('profile-name').innerText = userData.name;
+                            document.getElementById('user-name').innerText = userData.name;
+                            document.getElementById('user-email').innerText = userData.email;
+                            document.getElementById('user-phone').innerText = userData.phone;
+                            document.getElementById('user-address').innerText = userData.address;
+                            document.getElementById('user-birthday').innerText = userData.birthday;
+
+                            // Update the profile image if available
+                            if (userData.profileImageUrl) {
+                                document.getElementById('profile-img').src = userData.profileImageUrl;
+                            } else {
+                                // Set a default image if no profile image URL is found
+                                document.getElementById('profile-img').src = 'https://via.placeholder.com/100'; // Default image
+                            }
+                        } else {
+                            console.log('No user data found');
+                        }
+                    }).catch(function(error) {
+                        console.error('Error fetching user data:', error);
+                    });
+                } else {
+                    console.log('No user is signed in');
+                }
+            });
+        }
+
+        // Logout function
+        function logout() {
+            firebase.auth().signOut().then(function() {
+                alert('Logged out successfully');
+                window.location.href = 'login.html'; // Redirect to login page
+            }).catch(function(error) {
+                console.error('Error logging out:', error);
+            });
+        }
+
+        // Call the function to fetch user data when the page loads
+        window.onload = fetchUserData;
+
+        // Image upload function
+        function uploadImage(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var userId = firebase.auth().currentUser.uid; // Get current user ID
+                var storageRef = storage.ref('profilePictures/' + userId + '/' + file.name); // Create a storage reference
+
+                // Upload the file to Firebase Storage
+                storageRef.put(file).then(function(snapshot) {
+                    console.log('Uploaded a blob or file!');
+
+                    // Get the download URL
+                    storageRef.getDownloadURL().then(function(downloadURL) {
+                        // Update the user data in the database with the image URL
+                        var userRef = database.ref('users/' + userId);
+                        userRef.update({
+                            profileImageUrl: downloadURL
+                        }).then(function() {
+                            console.log('Profile image URL updated in database');
+                            document.getElementById('profile-img').src = downloadURL; // Update profile image on the page
+                        }).catch(function(error) {
+                            console.error('Error updating user data:', error);
+                        });
+                    }).catch(function(error) {
+                        console.error('Error getting download URL:', error);
+                    });
+                }).catch(function(error) {
+                    console.error('Error uploading file:', error);
+                });
+            }
+        }
+
+        // Camera functionality
+        let cameraStream = null;
+
+        function toggleCamera() {
+            if (!cameraStream) {
+                accessCamera();
+            } else {
+                capturePhoto();
+            }
+        }
+
+        function accessCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    cameraStream = stream;
+                    const video = document.getElementById('camera-stream');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    video.play();
+                })
+                .catch(err => {
+                    console.error("Error accessing the camera: ", err);
+                });
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const img = document.getElementById('profile-img');
+            img.src = canvas.toDataURL('image/png');
+            img.style.display = 'block';
+            video.style.display = 'none';
+            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream = null; // Reset camera stream
+
+            // Convert the captured image to a file and upload
+            canvas.toBlob(function(blob) {
+                var userId = firebase.auth().currentUser.uid; // Get current user ID
+                var storageRef = storage.ref('profilePictures/' + userId + '/' + 'camera-photo.png'); // Create a storage reference
+
+                // Upload the captured image to Firebase Storage
+                storageRef.put(blob).then(function(snapshot) {
+                    console.log('Captured photo uploaded!');
+
+                    // Get the download URL
+                    storageRef.getDownloadURL().then(function(downloadURL) {
+                        // Update the user data in the database with the image URL
+                        var userRef = database.ref('users/' + userId);
+                        userRef.update({
+                            profileImageUrl: downloadURL
+                        }).then(function() {
+                            console.log('Profile image URL updated in database');
+                        }).catch(function(error) {
+                            console.error('Error updating user data:', error);
+                        });
+                    }).catch(function(error) {
+                        console.error('Error getting download URL:', error);
+                    });
+                }).catch(function(error) {
+                    console.error('Error uploading captured photo:', error);
+                });
+            }, 'image/png');
+        }
+    </script>
+</body>
+</html>

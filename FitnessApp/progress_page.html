@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress</title>
+    <link rel="stylesheet" href="progress_page.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Progress</h1>
+    </header>
+    <main>
+        <div id="progress-container">
+            <h2>Workout Progress</h2>
+            <div id="progress-bars">
+                <!-- Progress bars will be populated here by JavaScript -->
+            </div>
+            <button id="edit-goals-button">Edit Goals</button>
+            <button id="reset-button">Reset Progress</button>
+        </div>
+        <div id="edit-goals-form" class="hidden">
+            <h2>Edit Weekly Goals</h2>
+            <form id="goals-form">
+                <!-- Form fields will be dynamically populated by JavaScript -->
+            </form>
+            <button id="save-goals-button">Save Goals</button>
+        </div>
+        <div id="chart-container">
+            <h2>Completed Workouts by Category</h2>
+            <canvas id="workout-chart"></canvas>
+        </div>
+        <!-- Add the button to go back to the Workouts page -->
+        <button id="workouts-button">Back to Workouts</button>
+    </main>
+    <script src="progress_page.js"></script>
+</body>
+</html>
+
+
+
+

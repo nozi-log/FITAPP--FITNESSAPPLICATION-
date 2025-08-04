@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Fitness App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: auto;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0b090a; /* night */
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            color: #ffffff; /* white */
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .card {
+            background: linear-gradient(to bottom right, #161a1d, #660708); /* eerie-black to blood-red */
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border: none;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+            color: #ffffff; /* white */
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            background-color: #d3d3d3; /* timberwolf */
+            color: #0b090a; /* night */
+            border: 2px solid #660708; /* blood-red */
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .form-control:focus {
+            background-color: #e5e5e5; /* eerie-black */
+            border-color: #a4161a; /* cornell-red */
+            box-shadow: 0 0 5px rgba(200, 38, 1, 0.5);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #660708; /* blood-red */
+            border: 2px solid #660708; /* blood-red */
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #e5383b; /* imperial-red */
+            border-color: #e5383b; /* imperial-red */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 38, 1, 0.5);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        p {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #b1a7a6; /* silver */
+        }
+
+        a {
+            color: #ffffff; /* white */
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #e5383b; /* imperial-red */
+            text-decoration: none;
+        }
+
+        #profile-picture {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            border: 2px solid #660708; /* blood-red */
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: none;
+            border: 2px solid #660708; /* blood-red */
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            height: 100%;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .btn-primary {
+                padding: 0.5rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>    
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Register</h1>
+        <div class="card">
+            <div class="card-body">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" id="birthday" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-pic">Profile Picture</label>
+                        <div id="upload-option">
+                            <input type="file" id="profile-pic" class="form-control-file" accept="image/*" style="display: none;">
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('profile-pic').click();">Upload from Files</button>
+                        </div>
+                        <button type="button" class="btn btn-primary mt-2" onclick="toggleCamera()">Take Photo with Camera</button>
+                        <video id="camera-stream" style="display:none;"></video>
+                        <img id="profile-picture" style="display:none;">
+                    </div>                    
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>    
+    <script src="auth.js"></script>
+    <script>
+        let cameraStream = null;
+        let isCameraActive = false;
+
+        document.getElementById('profile-pic').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('profile-picture');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    isCameraActive = false;
+                    document.getElementById('camera-stream').style.display = 'none';
+                }
+            }
+        });
+
+        function toggleCamera() {
+            if (!isCameraActive) {
+                accessCamera();
+            } else {
+                capturePhoto();
+            }
+        }
+
+        function accessCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    cameraStream = stream;
+                    const video = document.getElementById('camera-stream');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    video.play();
+                    isCameraActive = true;
+                })
+                .catch(err => {
+                    console.error("Error accessing the camera: ", err);
+                });
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const img = document.getElementById('profile-picture');
+            img.src = canvas.toDataURL('image/png');
+            img.style.display = 'block';
+            video.style.display = 'none';
+            cameraStream.getTracks().forEach(track => track.stop());
+            isCameraActive = false;
+        }
+    </script>
+</body>
+</html>
+

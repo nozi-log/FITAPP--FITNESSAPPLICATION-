@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workouts</title>
+    <link rel="stylesheet" href="stylesWN.css">
+</head>
+<body>
+    <header>
+        <button class="back-button" onclick="location.href='index.html'">Back</button>
+        <h1>Workouts</h1>
+    </header>
+    <main>
+        <ul id="workouts-list">
+            <li><button onclick="selectWorkout('arms')">Arms</button></li>
+            <li><button onclick="selectWorkout('shoulder')">Shoulder</button></li>
+            <li><button onclick="selectWorkout('chest')">Chest</button></li>
+            <li><button onclick="selectWorkout('back')">Back</button></li>
+            <li><button onclick="selectWorkout('legs')">Legs</button></li>
+            <li><button onclick="selectWorkout('core')">Core</button></li>
+        </ul>
+    </main>
+    <script src="workouts.js"></script>
+</body>
+</html>

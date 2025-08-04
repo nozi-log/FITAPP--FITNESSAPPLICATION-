@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Expense Tracker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: auto;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #161a1d; /* eerie-black */
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #f5f3f4; /* white */
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .card {
+            background: linear-gradient(to bottom right, #660708, #161a1d); /* blood-red to eerie-black */
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border: none;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            background-color: #d3d3d3; /* timberwolf */
+            color: #0b090a; /* night */
+            border: 2px solid #660708; /* blood-red */
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .form-control:focus {
+            background-color: #d3d3d3;; /* eerie-black */
+            border-color: #a4161a; /* cornell-red */
+            box-shadow: 0 0 5px rgba(200, 38, 1, 0.5);
+            outline: none;
+        }
+
+        .form-group label {
+            color: #f5f3f4; /* white */
+        }
+
+        .btn-primary {
+            background-color: #660708; /* blood-red */
+            border: 2px solid #660708; /* blood-red */
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #e5383b; /* imperial-red */
+            border-color: #e5383b; /* imperial-red */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 38, 1, 0.5);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        p {
+            margin-top: 1.5rem;
+            color: #b1a7a6; /* silver */
+        }
+
+        a {
+            color: #f5f3f4; /* white */
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #e5383b; /* imperial-red */
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .btn-primary {
+                padding: 0.5rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Login</h1>
+        <div class="card">
+            <div class="card-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <p>Don't have an account? <a href="register.html">Register here</a></p>
+            </div>
+        </div>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>        
+        <script src="auth.js"></script>
+</html>
